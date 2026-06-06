@@ -50,8 +50,8 @@ const handleSearch = async () => {
   
   try {
     // 向 Python 後端發送請求 (確保使用 localhost)
-    const res = await axios.get(`http://127.0.0.1:8000/api/stock/${searchId.value}`);
-    
+    const res = await axios.get(
+  `${import.meta.env.VITE_API_URL}/api/stock/${searchId.value}`)
     if (res.data.status === 'success') {
       // 關鍵修正：如果後端沒撈到 stock_name (例如台股 info 噴空值)，就用「股票 + 代碼」防呆
       stockInfo.value = { 
@@ -61,8 +61,7 @@ const handleSearch = async () => {
       
       // 將後端陣列灌進變數，觸發子組件渲染
       chartData.value.candlestick = res.data.candlestick;
-      chartData.value.ma5 = res.data.ma5;
-      chartData.value.getma20 = res.data.ma20; // 確保與後端欄位對齊
+      chartData.value.ma5 = res.data.ma5;// 確保與後端欄位對齊
       chartData.value.ma20 = res.data.ma20;
     } else {
       errorMsg.value = res.data.message || '讀取失敗';
