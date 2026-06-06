@@ -51,7 +51,8 @@ const handleSearch = async () => {
   try {
     // 向 Python 後端發送請求 (確保使用 localhost)
     const res = await axios.get(
-  `${import.meta.env.VITE_API_URL}/api/stock/${searchId.value}`)
+  `${import.meta.env.VITE_API_URL}/api/stock/${searchId.value}`
+);
     if (res.data.status === 'success') {
       // 關鍵修正：如果後端沒撈到 stock_name (例如台股 info 噴空值)，就用「股票 + 代碼」防呆
       stockInfo.value = { 
