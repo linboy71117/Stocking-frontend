@@ -46,7 +46,14 @@
     </div>
 
     <!-- 時間區間 -->
-    <div class="period-bar">
+   <div
+        class="period-bar"
+        style="
+        background:red;
+        padding:20px;
+        border:5px solid yellow;
+        "
+    >
 
       <button @click="changePeriod('1mo')">
         1M
