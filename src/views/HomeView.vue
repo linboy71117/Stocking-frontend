@@ -1,9 +1,5 @@
 <template>
 
-<h1 style="color:red">
-我是新版 HomeView
-</h1>
-
 <div class="home-container">
   <div class="home-container">
 
