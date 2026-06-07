@@ -256,32 +256,32 @@ onMounted(() => {
 
 <style scoped>
 /* ==========================================================================
-   CSS 核心主題變數系統 (支援無縫一鍵切換深色/淺色模式)
+   強力蓋台版 CSS 樣式系統 (確保深色模式100%生效)
    ========================================================================== */
 .home-container {
-  --bg-color: #f3f4f6;
-  --panel-bg: #ffffff;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
-  --card-item-bg: #f9fafb;
+  --bg-color: #f3f4f6 !important;
+  --panel-bg: #ffffff !important;
+  --text-main: #1f2937 !important;
+  --text-muted: #6b7280 !important;
+  --border-color: #e5e7eb !important;
+  --card-item-bg: #f9fafb !important;
   
-  background-color: var(--bg-color);
-  color: var(--text-main);
+  background-color: var(--bg-color) !important;
+  color: var(--text-main) !important;
   min-height: 100vh;
   padding: 30px 20px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* 🌙 當啟用深色主題時，全自動覆蓋顏色變數 */
+/* 🌙 當啟用深色主題時，強制覆蓋所有背景與文字顏色 */
 .home-container.dark-theme {
-  --bg-color: #0f1115;
-  --panel-bg: #161a22;
-  --text-main: #f3f4f6;
-  --text-muted: #9ca3af;
-  --border-color: #262c36;
-  --card-item-bg: #1d2430;
+  --bg-color: #0f1115 !important;
+  --panel-bg: #161a22 !important;
+  --text-main: #f3f4f6 !important;
+  --text-muted: #9ca3af !important;
+  --border-color: #262c36 !important;
+  --card-item-bg: #1d2430 !important;
 }
 
 /* 上方橫幅 */
@@ -290,18 +290,29 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
 }
-.header-banner h2 { margin: 0; color: var(--text-main); }
+.header-banner h2 { 
+  margin: 0; 
+  color: var(--text-main) !important; 
+}
 
+/* 🎯 讓切換按鈕超級明顯的外觀 */
 .theme-toggle-btn {
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: 20px;
-  border: 1px solid var(--border-color);
-  background: var(--panel-bg);
-  color: var(--text-main);
+  border: 2px solid #10b981;
+  background: #10b981;
+  color: white !important;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.1s;
+}
+.theme-toggle-btn:active {
+  transform: scale(0.95);
 }
 
 .search-wrapper {
@@ -320,14 +331,14 @@ onMounted(() => {
   font-size: 16px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: var(--panel-bg);
-  color: var(--text-main);
+  background: var(--panel-bg) !important;
+  color: var(--text-main) !important;
 }
 
 .search-btn {
   padding: 14px 28px;
   background: #10b981;
-  color: white;
+  color: white !important;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -335,7 +346,7 @@ onMounted(() => {
 }
 .search-btn:disabled { background: #6b7280; }
 
-/* 時間區間選擇列（高質感設計） */
+/* 時間區間選擇列 */
 .period-bar {
   display: flex;
   gap: 8px;
@@ -345,19 +356,18 @@ onMounted(() => {
   padding: 10px 18px;
   border: 1px solid var(--border-color);
   border-radius: 6px;
-  background: var(--panel-bg);
-  color: var(--text-main);
+  background: var(--panel-bg) !important;
+  color: var(--text-main) !important;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s;
 }
 .period-bar button:hover, .period-bar button.active {
-  background: #10b981;
-  color: white;
-  border-color: #10b981;
+  background: #10b981 !important;
+  color: white !important;
+  border-color: #10b981 !important;
 }
 
-/* 🪪 股票基本資料卡樣式 (支援5欄自適應排列) */
+/* 🪪 股票基本資料卡樣式 */
 .stock-card {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -366,7 +376,7 @@ onMounted(() => {
 }
 
 .card-item {
-  background: var(--card-item-bg);
+  background: var(--card-item-bg) !important;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 16px 12px;
@@ -375,7 +385,7 @@ onMounted(() => {
 
 .label {
   display: block;
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
   font-size: 13px;
   margin-bottom: 6px;
 }
@@ -383,15 +393,16 @@ onMounted(() => {
 .value {
   font-size: 16px;
   font-weight: bold;
+  color: var(--text-main) !important;
 }
-.highlight-red { color: #ef4444; }
-.text-green { color: #10b981; }
-.text-blue { color: #3b82f6; }
+.highlight-red { color: #ef4444 !important; }
+.text-green { color: #10b981 !important; }
+.text-blue { color: #3b82f6 !important; }
 
 /* 🤖 AI 智慧分析區塊 */
 .ai-section {
   border: 1px solid #8b5cf6;
-  background: var(--panel-bg);
+  background: var(--panel-bg) !important;
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 25px;
@@ -403,10 +414,10 @@ onMounted(() => {
   flex-wrap: wrap;
   gap: 12px;
 }
-.ai-header h3 { margin: 0; color: var(--text-main); font-size: 18px; }
+.ai-header h3 { margin: 0; color: var(--text-main) !important; font-size: 18px; }
 .ai-btn {
   background: #8b5cf6;
-  color: white;
+  color: white !important;
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -426,13 +437,14 @@ onMounted(() => {
   white-space: pre-line;
   line-height: 1.6;
   margin: 0;
+  color: var(--text-main) !important;
 }
 
 /* 自動推薦下拉框 */
 .suggestion-box {
   position: absolute;
   width: 100%;
-  background: var(--panel-bg);
+  background: var(--panel-bg) !important;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow: hidden;
@@ -447,17 +459,19 @@ onMounted(() => {
   gap: 12px;
   border-bottom: 1px solid var(--border-color);
 }
-.suggestion-item:hover { background: var(--card-item-bg); }
+.suggestion-item:hover { background: var(--card-item-bg) !important; }
 .stock-code { font-weight: bold; color: #10b981; }
+.stock-name { color: var(--text-main) !important; }
 
 .error { color: #ef4444; font-weight: bold; margin-bottom: 20px; }
 
 /* 主看板結果外框 */
 .result-section {
-  background: var(--panel-bg);
+  background: var(--panel-bg) !important;
   padding: 25px;
   border-radius: 10px;
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 </style>
+
