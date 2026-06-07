@@ -33,6 +33,9 @@
 <script setup>
 import { computed, defineProps } from 'vue'
 
+// 🎯 核心修復：從 vue3-apexcharts 套件中精準引入 apexchart 元件，解決解不開組件的噴錯！
+import apexchart from 'vue3-apexcharts'
+
 // 接收來自 HomeView.vue 的所有新擴充數據，以及深色模式狀態
 const props = defineProps({
   candlestickData: { type: Array, default: () => [] },
@@ -46,8 +49,6 @@ const props = defineProps({
 // ==========================================
 // 1. 圖表數據結構 (Series)
 // ==========================================
-
-// 主圖表包含：K線本身、MA5 條、MA20 條
 const mainSeries = computed(() => {
   return [
     { name: 'K線', type: 'candlestick', data: props.candlestickData },
@@ -56,12 +57,10 @@ const mainSeries = computed(() => {
   ]
 })
 
-// 成交量圖表
 const volumeSeries = computed(() => {
   return [{ name: '成交量', data: props.volumeData }]
 })
 
-// RSI 圖表
 const rsiSeries = computed(() => {
   return [{ name: 'RSI(14)', data: props.rsiData }]
 })
@@ -69,21 +68,19 @@ const rsiSeries = computed(() => {
 // ==========================================
 // 2. 圖表外觀與主題設定 (Options)
 // ==========================================
-
-// 共通的網格、X軸樣式 (會隨深淺色切換自動變色)
 const getCommonOptions = (chartId, groupName) => {
   const isDark = props.isDarkMode
   return {
     chart: {
       id: chartId,
-      group: groupName, // 🎯 關鍵：讓同一個 group 的圖表滑鼠十字線與縮放完全連動！
-      toolbar: { show: chartId === 'main-kline' }, // 只在主圖顯示工具列
-      animations: { enabled: false }, // 關閉動畫，切換20年歷史大數據時才不會卡頓
+      group: groupName, // 讓三張圖的十字游標完全同步對齊
+      toolbar: { show: chartId === 'main-kline' },
+      animations: { enabled: false }, // 關閉動畫，切換大數據時才不卡頓
       background: 'transparent',
-      foreColor: isDark ? '#9ca3af' : '#4b5563' // 字體顏色切換
+      foreColor: isDark ? '#9ca3af' : '#4b5563'
     },
     theme: {
-      mode: isDark ? 'dark' : 'light' // 🎯 讓 ApexCharts 內建黑底/白底換裝
+      mode: isDark ? 'dark' : 'light'
     },
     grid: {
       borderColor: isDark ? '#262c36' : '#e5e7eb'
@@ -100,13 +97,11 @@ const getCommonOptions = (chartId, groupName) => {
   }
 }
 
-// 主 K 線圖設定
 const mainChartOptions = computed(() => {
   const options = getCommonOptions('main-kline', 'stock-group')
   return {
     ...options,
     title: { text: 'K 線與移動平均線 (MA)', align: 'left' },
-    // 綠買紅賣（符合傳統標準看盤習慣，或可依台股改紅買綠賣）
     plotOptions: {
       candlestick: {
         colors: {
@@ -116,9 +111,9 @@ const mainChartOptions = computed(() => {
       }
     },
     stroke: {
-      width: [1, 2, 2] // K線邊框粗細1，均線粗細2
+      width: [1, 2, 2]
     },
-    colors: ['#10b981', '#3b82f6', '#f59e0b'], // 各條線的顏色 (K線, MA5, MA20)
+    colors: ['#10b981', '#3b82f6', '#f59e0b'],
     yaxis: {
       labels: {
         formatter: (val) => val ? val.toFixed(2) : ''
@@ -128,13 +123,12 @@ const mainChartOptions = computed(() => {
   }
 })
 
-// 成交量圖設定
 const volumeChartOptions = computed(() => {
   const options = getCommonOptions('volume-chart', 'stock-group')
   return {
     ...options,
     title: { text: '成交量 (Volume)', align: 'left' },
-    colors: ['#6b7280'], // 成交量直方圖用中性灰色
+    colors: ['#6b7280'],
     dataLabels: { enabled: false },
     yaxis: {
       labels: {
@@ -148,21 +142,18 @@ const volumeChartOptions = computed(() => {
   }
 })
 
-// RSI 指標圖設定
 const rsiChartOptions = computed(() => {
   const options = getCommonOptions('rsi-chart', 'stock-group')
-  const isDark = props.isDarkMode
   return {
     ...options,
-    colors: ['#8b5cf6'], // RSI 用高貴紫
+    colors: ['#8b5cf6'],
     stroke: { width: 2 },
     yaxis: {
       min: 0,
       max: 100,
-      tickAmount: 2, // 只顯示 0, 50, 100
+      tickAmount: 2,
       labels: { formatter: (val) => val.toFixed(0) }
     },
-    // 🎯 技術指標超買超賣警戒線 (RSI > 70 核心警戒，RSI < 30 超跌)
     annotations: {
       yaxis: [
         { y: 70, borderColor: '#ef4444', strokeDashArray: 3, label: { text: '超買區 (70)', style: { color: '#fff', background: '#ef4444' } } },
@@ -180,17 +171,14 @@ const rsiChartOptions = computed(() => {
   gap: 20px;
   margin-top: 20px;
 }
-
 .chart-container {
   background: transparent;
   width: 100%;
 }
-
 .rsi-box {
   border-top: 1px dashed var(--border-color);
   padding-top: 15px;
 }
-
 .rsi-title {
   font-size: 14px;
   font-weight: bold;
