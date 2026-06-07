@@ -47,9 +47,7 @@
    <div
         class="period-bar"
         style="
-        background:red;
         padding:20px;
-        border:5px solid yellow;
         "
     >
 
