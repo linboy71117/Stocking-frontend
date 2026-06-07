@@ -113,6 +113,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+
+// 🎯 核心修復：精準引入改好的 StockChart 元件，這是圖表能不能顯靈、多開成交量與RSI的關鍵！
 import StockChart from '../components/StockChart.vue'
 
 // 基礎核心狀態
@@ -474,4 +476,3 @@ onMounted(() => {
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 </style>
-
