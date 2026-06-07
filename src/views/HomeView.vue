@@ -1,10 +1,16 @@
-```vue
 <template>
+
+<h1 style="color:red">
+我是新版 HomeView
+</h1>
+
+<div class="home-container">
   <div class="home-container">
 
     <div class="search-wrapper">
 
       <div class="search-bar">
+
         <input
           v-model="searchId"
           placeholder="輸入股票代碼、中文名稱、英文名稱"
@@ -18,6 +24,7 @@
         >
           {{ loading ? '查詢中...' : '查詢' }}
         </button>
+
       </div>
 
       <div
@@ -42,6 +49,35 @@
 
     </div>
 
+    <!-- 時間區間 -->
+    <div class="period-bar">
+
+      <button @click="changePeriod('1mo')">
+        1M
+      </button>
+
+      <button @click="changePeriod('3mo')">
+        3M
+      </button>
+
+      <button @click="changePeriod('6mo')">
+        6M
+      </button>
+
+      <button @click="changePeriod('1y')">
+        1Y
+      </button>
+
+      <button @click="changePeriod('5y')">
+        5Y
+      </button>
+
+      <button @click="changePeriod('max')">
+        MAX
+      </button>
+
+    </div>
+
     <p
       v-if="errorMsg"
       class="error"
@@ -53,16 +89,51 @@
       v-if="chartData.candlestick.length > 0"
       class="result-section"
     >
+
       <h2>
         {{ stockInfo.name }}
         ({{ stockInfo.id }})
       </h2>
+
+      <!-- 股票資料卡 -->
+      <div class="stock-card">
+
+        <div class="card-item">
+          <span class="label">目前區間</span>
+          <span class="value">
+            {{ period }}
+          </span>
+        </div>
+
+        <div class="card-item">
+          <span class="label">K棒數量</span>
+          <span class="value">
+            {{ chartData.candlestick.length }}
+          </span>
+        </div>
+
+        <div class="card-item">
+          <span class="label">MA5資料</span>
+          <span class="value">
+            {{ chartData.ma5.length }}
+          </span>
+        </div>
+
+        <div class="card-item">
+          <span class="label">MA20資料</span>
+          <span class="value">
+            {{ chartData.ma20.length }}
+          </span>
+        </div>
+
+      </div>
 
       <StockChart
         :candlestickData="chartData.candlestick"
         :ma5Data="chartData.ma5"
         :ma20Data="chartData.ma20"
       />
+
     </div>
 
   </div>
@@ -74,6 +145,8 @@ import axios from 'axios'
 import StockChart from '../components/StockChart.vue'
 
 const searchId = ref('2330')
+
+const period = ref('3mo')
 
 const loading = ref(false)
 
@@ -112,6 +185,15 @@ const handleSuggest = async () => {
   }
 }
 
+const changePeriod = (newPeriod) => {
+
+  period.value = newPeriod
+
+  if (stockInfo.value.id) {
+    handleSearch()
+  }
+}
+
 const selectSuggestion = (item) => {
 
   searchId.value = item.code
@@ -134,7 +216,7 @@ const handleSearch = async () => {
   try {
 
     const res = await axios.get(
-      `${import.meta.env.VITE_API_URL}/api/stock/${searchId.value}`
+      `${import.meta.env.VITE_API_URL}/api/stock/${searchId.value}?period=${period.value}`
     )
 
     if (res.data.status === 'success') {
@@ -215,6 +297,73 @@ const handleSearch = async () => {
   background: #999;
 }
 
+.period-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.period-bar button {
+
+  padding: 8px 14px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: #f3f4f6;
+
+  cursor: pointer;
+
+  font-weight: bold;
+}
+
+.period-bar button:hover {
+
+  background: #41b883;
+
+  color: white;
+}
+
+.stock-card {
+
+  display: grid;
+
+  grid-template-columns:
+  repeat(4,1fr);
+
+  gap: 15px;
+
+  margin-bottom: 20px;
+}
+
+.card-item {
+
+  background: #f8fafc;
+
+  border-radius: 8px;
+
+  padding: 15px;
+
+  text-align: center;
+}
+
+.label {
+
+  display: block;
+
+  color: #666;
+
+  margin-bottom: 5px;
+}
+
+.value {
+
+  font-size: 18px;
+
+  font-weight: bold;
+}
+
 .suggestion-box {
   position: absolute;
   width: 100%;
@@ -266,4 +415,4 @@ h2 {
   margin-bottom: 15px;
 }
 </style>
-```
+
