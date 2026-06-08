@@ -229,8 +229,9 @@ const getAIAnalysis = async () => {
   if (!stockInfo.value.id) return
   aiLoading.value = true
   try {
+    
     const res = await axios.get(
-      `${import.meta.env.VITE_API_URL}/api/ai_analysis/${stockInfo.value.id}`
+        `${import.meta.env.VITE_API_URL}/api/ai_analysis/${stockInfo.value.id}?period=${period.value}`
     )
     if (res.data.status === 'success') {
       aiAnalysisText.value = res.data.analysis
