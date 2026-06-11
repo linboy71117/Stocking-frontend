@@ -4,7 +4,7 @@
     <div class="header-banner">
       <h2>📈 智慧全端看盤系統</h2>
       <button @click="toggleDarkMode" class="theme-toggle-btn">
-        {{ isDarkMode ? '☀️ 淺色模式' : '🌙 深色模式' }}
+        {{ isDarkMode ? '☀️ 切換淺色模式' : '🌙 切換深色模式' }}
       </button>
     </div>
 
@@ -89,6 +89,7 @@
         <div class="ai-header">
           <h3>🤖 AI 智慧分析大腦</h3>
           <button @click="getAIAnalysis" :disabled="aiLoading" class="ai-btn">
+            AI分析即將來臨！
             {{ aiLoading ? '🧠 核心思維運算中...' : '💡 生成今日 AI 股評分析' }}
           </button>
         </div>
@@ -217,7 +218,7 @@ const handleSearch = async () => {
       errorMsg.value = res.data.message || '讀取失敗'
     }
   } catch (err) {
-    errorMsg.value = '無法連線到雲端後端 API，請確認伺服器運作狀態。'
+    errorMsg.value = '無法連線到雲端後端 API，請確認網絡設置或稍後再試。'
     console.error(err)
   } finally {
     loading.value = false

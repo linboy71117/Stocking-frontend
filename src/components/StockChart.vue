@@ -75,7 +75,7 @@ const getCommonOptions = (chartId, groupName) => {
       id: chartId,
       group: groupName, // 讓三張圖的十字游標完全同步對齊
       toolbar: { show: chartId === 'main-kline' },
-      animations: { enabled: false }, // 關閉動畫，切換大數據時才不卡頓
+      animations: { enabled: true }, // 關閉動畫，切換大數據時才不卡頓
       background: 'transparent',
       foreColor: isDark ? '#9ca3af' : '#4b5563'
     },

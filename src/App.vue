@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header class="app-header">
-      <h1>📊 Stock Market 輕量分析系統</h1>
+      <h1>📊 Stock Market 分析系統</h1>
     </header>
     <main>
       <HomeView />
